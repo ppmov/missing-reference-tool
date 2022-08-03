@@ -38,5 +38,6 @@ catch (MissingReferenceException)
 ```
 3) При этом способе считывается содержимое каждого файла в целях найти GUID объекта. Отсутствие такого же идентификатора в коллекции гуидов проекта говорит об утерянности ссылки. При таком решении необходимо разбирать содержимое каждого файла, что излишне усложняет разработку.
 ```csharp
-AssetDatabase.GUIDFromAssetPath() <> DecodeGUID(File.ReadAllLines()) // DecodeGUID - абстрактный метод расшифровки
+AssetDatabase.GUIDFromAssetPath() <> DecodeGUID(File.ReadAllLines()) 
+// DecodeGUID - абстрактный метод расшифровки
 ```
