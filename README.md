@@ -41,3 +41,16 @@ catch (MissingReferenceException)
 AssetDatabase.GUIDFromAssetPath() <> DecodeGUID(File.ReadAllLines()) 
 // DecodeGUID - абстрактный метод расшифровки
 ```
+4) Поиск вхождения "Missing" в поле атрибута ссылочного типа. Решение эффективно, но не идеально. Текст поля не подразумевается как ключевой фактор "утерянности" ссылки.
+```csharp
+using System.Reflection;
+
+PropertyInfo objRefValueMethod = typeof(SerializedProperty).GetProperty(
+    "objectReferenceStringValue",
+    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+);
+
+string objectReferenceStringValue = (string)objRefValueMethod
+    .GetGetMethod(true)
+    .Invoke(property, new object[] { });
+```
