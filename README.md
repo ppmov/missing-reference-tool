@@ -7,7 +7,7 @@
 
 # Установка и запуск:
 - Скопировать и вставить [MissingReferenceTool.cs](./MissingReferenceTool.cs) в каталог вашего проекта;
-- Убедиться что нет не сохраненных сцен и префабов;
+- Убедиться что открытая сцена и префаб сохранены;
 - Запустить инструмент через Tools/Find Missing References;
 
 ![plot](./Screenshots/Launch.png)
