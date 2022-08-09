@@ -83,7 +83,7 @@ namespace MissingReferenceTool
 
             GUILayout.EndScrollView();
         }
-        private static void DrawProgressBar(string path, float progress) => EditorUtility.DisplayProgressBar(Title, path, progress);
+        private static void DrawProgressBar(float progress) => EditorUtility.DisplayProgressBar(Title, finder?.Current.Path, progress);
         private static void ClearProgressBar() => EditorUtility.ClearProgressBar();
     }
 
@@ -109,12 +109,11 @@ namespace MissingReferenceTool
     /// <summary> Searching for missing references in all assets </summary>
     public class SearchEngine
     {
-        public delegate void SearchHandler(string path, float progress);
         private List<Row> rows;
 
         public Row Current { get; private set; }
 
-        public Row[] Find(SearchHandler observer = null)
+        public Row[] Find(System.Action<float> observer = null)
         {
             rows = new List<Row>();
             string[] paths = AssetDatabase.GetAllAssetPaths();
@@ -126,7 +125,7 @@ namespace MissingReferenceTool
                     continue;
 
                 Current = new Row(paths[i]);
-                observer?.Invoke(Current.Path, (float)i / paths.Length);
+                observer?.Invoke((float)i / paths.Length);
 
                 if (Current.Path.EndsWith(".prefab"))
                     SearchMissingReferencesInObject(AssetDatabase.LoadAssetAtPath<GameObject>(Current.Path));
@@ -143,12 +142,6 @@ namespace MissingReferenceTool
         // search in all game objects in the scene
         private void SearchMissingReferencesInObject(Scene scene)
         {
-            if (scene == null)
-            {
-                DeclareMissing();
-                return;
-            }
-
             foreach (GameObject root in scene.GetRootGameObjects())
                 SearchMissingReferencesInObject(root);
         }
